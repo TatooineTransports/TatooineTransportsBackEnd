@@ -14,9 +14,9 @@ public class UserController: Controller {
         _mongoDBService = mongoDBService;
     }
 
-    [HttpGet("{id}")]
-    public async Task<User> GetUser(string id) {
-        User user = await _mongoDBService.GetUser(id);
+    [HttpGet("{uid}")]
+    public async Task<User> GetUser(string uid) {
+        User user = await _mongoDBService.GetUser(uid);
         return user;
     }
 
@@ -26,15 +26,20 @@ public class UserController: Controller {
         return NoContent();
     }
 
-    [HttpPut("{id}")]
-    public async Task<IActionResult> updateUser(string id, [FromBody] User user) {
-        await _mongoDBService.UpdateUser(id, user);
+    [HttpPost("/validUser")]
+    public async Task<bool> ValidateNewUser([FromBody] User user) {
+        return await _mongoDBService.ValidateUser(user);
+    }
+
+    [HttpPut("{uid}")]
+    public async Task<IActionResult> updateUser(string uid, [FromBody] User user) {
+        await _mongoDBService.UpdateUser(uid, user);
         return NoContent();
     }
 
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete(string id) {
-        await _mongoDBService.DeleteUser(id);
+    [HttpDelete("{uid}")]
+    public async Task<IActionResult> Delete(string uid) {
+        await _mongoDBService.DeleteUser(uid);
         return NoContent();
     }
 

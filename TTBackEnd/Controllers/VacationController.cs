@@ -14,9 +14,14 @@ public class VacationController : Controller {
         _mongoDBService = mongoDBService;
     }
 
-    [HttpGet("{id}/vacations")]
-    public async Task<List<Vacation>> GetVacations(string id) {
-        return await _mongoDBService.GetVacations(id);
+    [HttpGet("{uid}/vacations")]
+    public async Task<List<Vacation>> GetVacations(string uid) {
+        return await _mongoDBService.GetVacations(uid);
+    }
+
+    [HttpGet("{vacId}")]
+    public async Task<Vacation> GetVacationByID(string vacId) {
+        return await _mongoDBService.GetVacationById(vacId);
     }
 
     [HttpPost]
@@ -34,6 +39,29 @@ public class VacationController : Controller {
     [HttpDelete("{vacId}")]
     public async Task<IActionResult> DeleteVacation(string vacId) {
         await _mongoDBService.DeleteVacation(vacId);
+        return NoContent();
+    }
+
+    [HttpGet("events/{vacId}")]
+    public async Task<List<Event>> GetEvents(string vacId){
+        return await _mongoDBService.GetEvents(vacId);
+    }
+
+    [HttpPost("events")]
+    public async Task<IActionResult> CreateEvent([FromBody] Event newEvent) {
+        await _mongoDBService.CreateEvent(newEvent);
+        return NoContent();
+    }
+
+    [HttpPut("events/{eventId}")]
+    public async Task<IActionResult> UpdateEvent(string eventId, [FromBody] Event updatedEvent) {
+        await _mongoDBService.UpdateEvent(eventId, updatedEvent);
+        return NoContent();
+    }
+
+    [HttpDelete("events/{eventId}")]
+    public async Task<IActionResult> DeleteEvent(string eventId) {
+        await _mongoDBService.DeleteEvent(eventId);
         return NoContent();
     }
 }
